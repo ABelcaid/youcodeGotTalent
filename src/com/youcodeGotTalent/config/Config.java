@@ -6,11 +6,7 @@ import java.sql.SQLException;
 
 public class Config {
 
-//	private String url;
-//	private String username;
-//	private String password;
-
-	private String url = "jdbc:mysql://localhost:3306/db";
+	private String url = "jdbc:mysql://localhost:3306/got_talent_db";
 	private String username = "root";
 	private String password = "";
 
