@@ -8,17 +8,16 @@ public class Administrator extends User {
 		this.password = password;
 	}
 
+	public Administrator() {
+
+	}
+
 	public String getPassword() {
 		return password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	@Override
-	public String toString() {
-		return "Administrator [password=" + password + ", toString()=" + super.toString() + "]";
 	}
 
 }

@@ -21,6 +21,10 @@ public class User {
 		this.phone = phone;
 	}
 
+	public User(String string, String string2, String string3, String string4) {
+		// TODO Auto-generated constructor stub
+	}
+
 	public long getId() {
 		return id;
 	}

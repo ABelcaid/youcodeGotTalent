@@ -28,6 +28,11 @@ public class Participation {
 		this.is_accepted = is_accepted;
 	}
 
+	public Participation(long long1, long long2, String string, java.sql.Timestamp timestamp,
+			java.sql.Timestamp timestamp2, String string2, boolean boolean1) {
+		// TODO Auto-generated constructor stub
+	}
+
 	public long getId_user() {
 		return id_user;
 	}
