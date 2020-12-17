@@ -1,18 +1,19 @@
 package com.youcodeGotTalent.models;
 
-public class User {
+public class UsersModels {
+
 	private long id;
 	private String first_name;
 	private String last_name;
 	private String email;
 	private String phone;
 
-	public User() {
+	public UsersModels() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public User(long id, String first_name, String last_name, String email, String phone) {
+	public UsersModels(long id, String first_name, String last_name, String email, String phone) {
 		super();
 		this.id = id;
 		this.first_name = first_name;
@@ -61,27 +62,4 @@ public class User {
 		this.phone = phone;
 	}
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", first_name=" + first_name + ", last_name=" + last_name + ", email=" + email
-				+ ", phone=" + phone + "]";
-	}
-
-//User methods
-
-	// add user
-	public void addUser() {
-
-	}
-
-	// find user
-	public User findUserById() {
-		return null;
-
-	}
-
-	// update user
-	public void updateUser() {
-
-	}
 }

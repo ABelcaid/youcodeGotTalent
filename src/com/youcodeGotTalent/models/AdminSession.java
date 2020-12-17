@@ -1,5 +1,10 @@
 package com.youcodeGotTalent.models;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import com.youcodeGotTalent.config.Config;
+
 public class AdminSession {
 
 	private long id;
@@ -14,8 +19,7 @@ public class AdminSession {
 	}
 
 	public AdminSession() {
-		super();
-		// TODO Auto-generated constructor stub
+		Config conn = new Config();
 	}
 
 	public long getId() {
@@ -42,4 +46,26 @@ public class AdminSession {
 		this.is_connected = is_connected;
 	}
 
+	// Admin connection methods
+
+	public void adminConnection() throws SQLException {
+		Config conn = new Config();
+		conn.connection();
+
+		String sql = "UPDATE adminsession SET is_connected = 1 WHERE id_administrator = 15970010";
+		PreparedStatement statement = conn.connection().prepareStatement(sql);
+//		statement.setBoolean(1, is_connected);
+		statement.executeUpdate();
+
+	}
+
+	public void adminDeconnection() throws SQLException {
+		Config conn = new Config();
+		conn.connection();
+
+		String sql = "UPDATE adminsession SET is_connected = 0 WHERE id_administrator = 15970010";
+		PreparedStatement statement = conn.connection().prepareStatement(sql);
+		statement.executeUpdate();
+
+	}
 }
