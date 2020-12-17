@@ -1,6 +1,5 @@
 package com.youcodeGotTalent.controller;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,20 +9,26 @@ import com.youcodeGotTalent.config.Config;
 import com.youcodeGotTalent.models.AdminSession;
 import com.youcodeGotTalent.models.Participation;
 import com.youcodeGotTalent.models.User;
+import com.youcodeGotTalent.smtpMail.SendMail;
 
 public class AdminController {
 
 	// Admin Controller
+	Config conn = new Config();
+
+	public AdminController() {
+		Config conn = new Config();
+	}
 
 	public void adminConnect(String email, String password) throws SQLException {
 
 		String defaultEmail = "ahmed.mahmoud.admin@gmail.com";
-		String defaultPassword = "ahmed@mahmoud&admin";
+		String defaultPassword = "BELCAID@1234&bel";
 
 		if (email.equals(defaultEmail) && password.equals(defaultPassword)) {
 			System.out.println("Access Granted! Welcome!");
 			AdminSession session = new AdminSession();
-			session.adminConnection(true);
+			session.adminConnection();
 		}
 	}
 
@@ -33,17 +38,14 @@ public class AdminController {
 
 		ArrayList<User> users = new ArrayList<User>();
 
-		Config conn = new Config();
-		conn.connection();
-
 		String sql = "select * from user";
-		PreparedStatement statement = ((Connection) conn).prepareStatement(sql);
+		PreparedStatement statement = conn.connection().prepareStatement(sql);
 		ResultSet rs = statement.executeQuery(sql);
 
 		while (rs.next()) {
 
-			users.add(new User(rs.getString("fist_name"), rs.getString("last_name"), rs.getString("email"),
-					rs.getString("phone")));
+			users.add(new User(rs.getLong("id"), rs.getString("first_name"), rs.getString("last_name"),
+					rs.getString("email"), rs.getString("phone")));
 		}
 		return users;
 
@@ -55,17 +57,15 @@ public class AdminController {
 
 		ArrayList<Participation> listParticipation = new ArrayList<Participation>();
 
-		Config conn = new Config();
-		conn.connection();
 		String sql = "select * from participation";
-		PreparedStatement statement = ((Connection) conn).prepareStatement(sql);
+		PreparedStatement statement = conn.connection().prepareStatement(sql);
 		ResultSet rs = statement.executeQuery(sql);
 
 		while (rs.next()) {
 
 			listParticipation.add(new Participation(rs.getLong("id_user"), rs.getLong("id_category"),
 					rs.getString("description"), rs.getTimestamp("show_start_time"), rs.getTimestamp("show_end_time"),
-					rs.getString("file"), rs.getBoolean("is_accepted")));
+					rs.getString("attached_file"), rs.getBoolean("is_accepted")));
 		}
 		return listParticipation;
 
@@ -73,63 +73,99 @@ public class AdminController {
 
 	// findParticipationByUserEmail Method
 
-	public String findParticipationByUserEmail(String email) throws SQLException {
-		Config conn = new Config();
-		conn.connection();
-		String sql = "select * from user " + "WHERE email = ?";
+	public ArrayList<Participation> findParticipationByUserEmail(String email) throws SQLException {
+
+		ArrayList<Participation> listParticipationByEmail = new ArrayList<Participation>();
+
+		String sql = "select * from user where email = '" + email + "' ";
 
 		// Get user id from user table using the email
 
-		PreparedStatement statement = ((Connection) conn).prepareStatement(sql);
-		statement.setString(1, email);
+		PreparedStatement statement = conn.connection().prepareStatement(sql);
 		ResultSet rs = statement.executeQuery(sql);
-		int id_user = rs.getInt("id");
 
-		// check if id_user not null
+		int id_user = 0;
+		while (rs.next()) {
+			id_user = rs.getInt("id");
 
-		if (id_user != 0) {
-
-			String sql2 = "select * from participation " + "WHERE id = ?";
-			PreparedStatement statement2 = ((Connection) conn).prepareStatement(sql);
-			statement2.setLong(1, id_user);
-			ResultSet rs2 = statement2.executeQuery(sql2);
-
-			String participationFound = "";
-
-			participationFound = rs2.getString("id_user") + " " + rs2.getString("id_category") + " "
-					+ rs2.getString("description") + " " + rs2.getString("show_start_time") + " "
-					+ rs2.getString("show_end_time") + " " + rs2.getString("is_accepted");
-
-			return participationFound;
 		}
-		return "Participation not found ";
+
+		String sql2 = "select * from participation WHERE id_user = '" + id_user + "'";
+
+		PreparedStatement statement2 = conn.connection().prepareStatement(sql2);
+		ResultSet rs2 = statement2.executeQuery(sql2);
+
+		while (rs2.next()) {
+
+			listParticipationByEmail.add(new Participation(rs2.getLong("id_user"), rs2.getLong("id_category"),
+					rs2.getString("description"), rs2.getTimestamp("show_start_time"),
+					rs2.getTimestamp("show_end_time"), rs2.getString("attached_file"), rs2.getBoolean("is_accepted")));
+		}
+		return listParticipationByEmail;
 
 	}
 
 	// validateParticipation Method
 
-	public void validateParticipation(long id_user) throws SQLException {
+	public void validateParticipation(long id_user, long id_category) throws SQLException {
 
 		// Check if id exist in table
 
-		Config conn = new Config();
-		conn.connection();
-
-		String sql = "select * from participation " + "WHERE id = ?";
-		PreparedStatement statement = ((Connection) conn).prepareStatement(sql);
-		statement.setLong(1, id_user);
+		String sql = "select * from participation  WHERE id_user = '" + id_user + "' AND id_category = '" + id_category
+				+ "'AND is_accepted = 0 ";
+		PreparedStatement statement = conn.connection().prepareStatement(sql);
 		ResultSet rs = statement.executeQuery(sql);
 		if (rs.isBeforeFirst()) {
 
-			String sql2 = "UPDATE participation " + "is_accepted = ? " + "WHERE id = ?";
-			PreparedStatement statement2 = ((Connection) conn).prepareStatement(sql2);
-			statement2.setBoolean(1, true);
-			statement2.setLong(2, id_user);
+			String sql2 = "UPDATE participation SET is_accepted = 1 WHERE id_user ='" + id_user + "'";
+			PreparedStatement statement2 = conn.connection().prepareStatement(sql2);
 			statement2.executeUpdate();
+			System.out.println("User Accepted \n");
+
+			// Get the user Email :D
+
+			String sql3 = "select * from user where id = '" + id_user + "' ";
+
+			// Get user id from user table using the email
+
+			PreparedStatement statement3 = conn.connection().prepareStatement(sql3);
+			ResultSet rs3 = statement3.executeQuery(sql3);
+			String email = "";
+			while (rs3.next()) {
+				email = rs3.getString("email");
+
+			}
 
 			// Send mail to user
 
+			String USER_NAME = "belcaidtestmail"; // GMail user name (just the part before "@gmail.com")
+			String PASSWORD = "BELCAID@1221"; // GMail password
+			String RECIPIENT = email; // User Email
+
+			String from = USER_NAME;
+			String pass = PASSWORD;
+			String[] to = { RECIPIENT }; // list of recipient email addresses
+			String subject = "YouCode got Talent";
+			String body = "Congratulations you have been selected to participate in YouCode got Talent 2020";
+			SendMail.sendFromGMail(from, pass, to, subject, body);
 		}
 
 	}
+
+	public boolean checkAdminIsLogged() throws SQLException {
+
+		String sql = "select * from adminsession WHERE id_administrator = 15970010";
+		PreparedStatement statement = conn.connection().prepareStatement(sql);
+		ResultSet rs = statement.executeQuery(sql);
+		while (rs.next()) {
+			if (rs.getBoolean("is_connected") == true) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return false;
+
+	}
+
 }

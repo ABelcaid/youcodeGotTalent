@@ -1,6 +1,5 @@
 package com.youcodeGotTalent.models;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -20,8 +19,7 @@ public class AdminSession {
 	}
 
 	public AdminSession() {
-		super();
-		// TODO Auto-generated constructor stub
+		Config conn = new Config();
 	}
 
 	public long getId() {
@@ -50,24 +48,23 @@ public class AdminSession {
 
 	// Admin connection methods
 
-	public void adminConnection(Boolean is_connected) throws SQLException {
+	public void adminConnection() throws SQLException {
 		Config conn = new Config();
 		conn.connection();
 
-		String sql = "UPDATE adminsession " + "is_connected = ? " + "WHERE id = 15970010";
-		PreparedStatement statement = ((Connection) conn).prepareStatement(sql);
-		statement.setBoolean(1, is_connected);
+		String sql = "UPDATE adminsession SET is_connected = 1 WHERE id_administrator = 15970010";
+		PreparedStatement statement = conn.connection().prepareStatement(sql);
+//		statement.setBoolean(1, is_connected);
 		statement.executeUpdate();
 
 	}
 
-	public void adminDeconnection(Boolean is_connected) throws SQLException {
+	public void adminDeconnection() throws SQLException {
 		Config conn = new Config();
 		conn.connection();
 
-		String sql = "UPDATE adminsession " + "is_connected = ? " + "WHERE id = 15970010";
-		PreparedStatement statement = ((Connection) conn).prepareStatement(sql);
-		statement.setBoolean(1, is_connected);
+		String sql = "UPDATE adminsession SET is_connected = 0 WHERE id_administrator = 15970010";
+		PreparedStatement statement = conn.connection().prepareStatement(sql);
 		statement.executeUpdate();
 
 	}
