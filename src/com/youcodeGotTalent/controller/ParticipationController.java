@@ -54,7 +54,7 @@ public class ParticipationController {
 
 		partiMod.setShow_end_time(timeEnd);
 
-		String sql1 = "insert into participation (id_user, id_categorie, desc_parti, show_start_time, show_end_time, attached_file, is_accepted) values('"
+		String sql1 = "insert into participation (id_user, id_category, description, show_start_time, show_end_time, attached_file, is_accepted) values('"
 				+ userId + "', '" + categoryId + "', '" + descParti + "', '" + timeStart + "', '" + timeEnd
 				+ "', 'test', '0')";
 
@@ -66,7 +66,7 @@ public class ParticipationController {
 
 			System.out.println("Your Praticipation is Added");
 
-			String sql3 = "select * from users where id = '" + userId + "'";
+			String sql3 = "select * from user where id = '" + userId + "'";
 
 			Statement stm3 = conn.connection().createStatement();
 
@@ -100,7 +100,7 @@ public class ParticipationController {
 
 		partiOth.setId_category(ctgId);
 
-		String sql = "select * from participation where id_user = '" + userId + "' and id_categorie = '" + ctgId + "'";
+		String sql = "select * from participation where id_user = '" + userId + "' and id_category = '" + ctgId + "'";
 
 		PreparedStatement stm = conn.connection().prepareStatement(sql);
 
@@ -110,7 +110,7 @@ public class ParticipationController {
 
 			long test = res.getLong("id_user");
 
-			long test1 = res.getLong("id_categorie");
+			long test1 = res.getLong("id_category");
 
 			if (test == userId && test1 == ctgId) {
 
@@ -142,7 +142,7 @@ public class ParticipationController {
 
 			partiOth.setShow_end_time(timeEnd);
 
-			String sql1 = "insert into participation (id_user, id_categorie, desc_parti, show_start_time, show_end_time, attached_file, is_accepted) values('"
+			String sql1 = "insert into participation (id_user, id_category, description, show_start_time, show_end_time, attached_file, is_accepted) values('"
 					+ userId + "', '" + ctgId + "', '" + descParti + "', '" + timeStart + "', '" + timeEnd
 					+ "', 'test', '0')";
 
@@ -154,7 +154,7 @@ public class ParticipationController {
 
 				System.out.println("You Participate in Other Category");
 
-				String sql3 = "select * from users where id = '" + userId + "'";
+				String sql3 = "select * from user where id = '" + userId + "'";
 
 				Statement stm3 = conn.connection().createStatement();
 
