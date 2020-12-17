@@ -47,7 +47,7 @@ public class UserController {
 
 		userCon.setPhone(userPhone);
 
-		String sql = "insert into users (id, first_name, last_name, email, phone) values ('" + userId + "', '"
+		String sql = "insert into user (id, first_name, last_name, email, phone) values ('" + userId + "', '"
 				+ userFirst + "', '" + userLast + "', '" + userEmail + "', '" + userPhone + "')";
 
 		PreparedStatement stm = conn.connection().prepareStatement(sql);
@@ -60,7 +60,7 @@ public class UserController {
 
 		}
 
-		String sql2 = "select * from users where id = '" + userId + "'";
+		String sql2 = "select * from user where id = '" + userId + "'";
 
 		Statement stm2 = conn.connection().createStatement();
 
@@ -77,7 +77,7 @@ public class UserController {
 
 	public void ShowCatgory() throws SQLException {
 
-		String sql = "select * from categorie";
+		String sql = "select * from category";
 
 		Statement stm = conn.connection().createStatement();
 
@@ -85,7 +85,7 @@ public class UserController {
 
 		while (res.next()) {
 
-			System.out.println(res.getString("id_categorie") + " " + res.getString("name_categorie"));
+			System.out.println(res.getString("id") + " " + res.getString("name"));
 
 		}
 
