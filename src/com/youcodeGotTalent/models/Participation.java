@@ -9,12 +9,6 @@ public class Participation {
 	private String attached_file;
 	private boolean is_accepted;
 
-//	public Participation(long l, long m, String string, java.sql.Timestamp timestamp, java.sql.Timestamp timestamp2,
-//			String string2, boolean b) {
-//		super();
-//		// TODO Auto-generated constructor stub
-//	}
-
 	public Participation(long id_user, long id_category, String description, java.sql.Timestamp show_start_time,
 			java.sql.Timestamp show_end_time, String attached_file, boolean is_accepted) {
 		super();

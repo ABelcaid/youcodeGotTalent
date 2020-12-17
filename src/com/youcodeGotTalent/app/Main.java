@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 import com.youcodeGotTalent.controller.AdminController;
+import com.youcodeGotTalent.controller.ParticipationController;
+import com.youcodeGotTalent.controller.UserController;
 import com.youcodeGotTalent.models.AdminSession;
 import com.youcodeGotTalent.validation.Validation;
 
@@ -14,13 +16,14 @@ public class Main {
 		Scanner scanner = new Scanner(System.in);
 
 		boolean firstMenu = true;
+
 		// Display the title of the chosen module
 		while (firstMenu) {
 			System.out.println("+-------------------------+ :");
 			System.out.println("| You Welcome in Our Application|");
 			System.out.println("+-------------------------+ :");
 			System.out.println("1\t  Admin Only");
-			System.out.println("2\t  Exit");
+			System.out.println("2\t  New User Registration");
 
 			System.out.println("Choix :");
 			int choice = scanner.nextInt();
@@ -191,6 +194,72 @@ public class Main {
 					}// end of switch
 				}
 				break;
+			case 2:
+				UserController user = new UserController();
+
+				user.UserCon();
+
+				int inp = 0;
+
+				do {
+
+					System.out.println("1 - Make a new Participation :");
+
+					System.out.println("2 - Make another Participaiton :");
+
+					System.out.println("3 - Show Category Information :");
+
+					System.out.println("4 - Update User Informations :");
+
+					System.out.println("5 - Exit");
+
+					System.out.println(" Enter a number :");
+
+					inp = scanner.nextInt();
+
+					switch (inp) {
+					case 1:
+
+						ParticipationController partiCon = new ParticipationController();
+
+						partiCon.UserParti();
+
+						break;
+
+					case 2:
+
+						ParticipationController partiOth = new ParticipationController();
+
+						partiOth.OtherParti();
+
+						break;
+
+					case 3:
+
+						UserController userSh = new UserController();
+
+						userSh.ShowCatgory();
+
+						break;
+
+					case 4:
+
+						UserController userUpd = new UserController();
+
+						userUpd.UpdateUser();
+
+					default:
+
+						break;
+					}
+
+				} while (inp != 5);
+
+				break;
+
+			default:
+				System.out.println("Invalid choice");
+
 			}
 		}
 	}

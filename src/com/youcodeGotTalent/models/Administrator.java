@@ -1,6 +1,6 @@
 package com.youcodeGotTalent.models;
 
-public class Administrator extends User {
+public class Administrator extends UsersModels {
 	private String password;
 
 	public Administrator(long id, String first_name, String last_name, String email, String phone, String password) {

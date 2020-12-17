@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import com.youcodeGotTalent.config.Config;
 import com.youcodeGotTalent.models.AdminSession;
 import com.youcodeGotTalent.models.Participation;
-import com.youcodeGotTalent.models.User;
+import com.youcodeGotTalent.models.UsersModels;
 import com.youcodeGotTalent.smtpMail.SendMail;
 
 public class AdminController {
@@ -34,9 +34,9 @@ public class AdminController {
 
 	// findAllUser Method
 
-	public ArrayList<User> findAllUser() throws SQLException {
+	public ArrayList<UsersModels> findAllUser() throws SQLException {
 
-		ArrayList<User> users = new ArrayList<User>();
+		ArrayList<UsersModels> users = new ArrayList<UsersModels>();
 
 		String sql = "select * from user";
 		PreparedStatement statement = conn.connection().prepareStatement(sql);
@@ -44,7 +44,7 @@ public class AdminController {
 
 		while (rs.next()) {
 
-			users.add(new User(rs.getLong("id"), rs.getString("first_name"), rs.getString("last_name"),
+			users.add(new UsersModels(rs.getLong("id"), rs.getString("first_name"), rs.getString("last_name"),
 					rs.getString("email"), rs.getString("phone")));
 		}
 		return users;
