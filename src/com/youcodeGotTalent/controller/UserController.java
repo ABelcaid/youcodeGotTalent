@@ -8,8 +8,10 @@ import java.util.Scanner;
 
 import com.youcodeGotTalent.config.Config;
 import com.youcodeGotTalent.models.UsersModels;
+import com.youcodeGotTalent.validation.Validation;
 
 public class UserController {
+	Validation validation = new Validation();
 
 	Config conn = new Config();
 
@@ -39,11 +41,27 @@ public class UserController {
 
 		String userEmail = scanner.next();
 
+		while (validation.emailValidation(userEmail) == false) {
+
+			System.out.println("Invalid  Email  \n");
+			System.out.println("Enter the email :");
+
+			userEmail = scanner.next();
+		}
+
 		userCon.setEmail(userEmail);
 
 		System.out.println("Enter the phone number :");
 
-		String userPhone = scanner.nextLine();
+		String userPhone = scanner.next();
+
+		while (validation.phoneValidation(userPhone) == false) {
+
+			System.out.println("Invalid  Phone number \n");
+			System.out.println("Enter the phone number :");
+
+			userPhone = scanner.next();
+		}
 
 		userCon.setPhone(userPhone);
 
