@@ -24,4 +24,14 @@ public class Validation {
 
 	}
 
+	public boolean phoneValidation(String phone) {
+
+		String regex = "\\+\\d{3}\\d{9}";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(phone);
+
+		return matcher.matches();
+
+	}
+
 }

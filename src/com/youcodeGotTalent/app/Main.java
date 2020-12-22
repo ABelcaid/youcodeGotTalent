@@ -223,6 +223,7 @@ public class Main {
 						ParticipationController partiCon = new ParticipationController();
 
 						partiCon.UserParti();
+						System.out.println(" Added Successfully");
 
 						break;
 
@@ -231,6 +232,7 @@ public class Main {
 						ParticipationController partiOth = new ParticipationController();
 
 						partiOth.OtherParti();
+						System.out.println(" Added Successfully");
 
 						break;
 
